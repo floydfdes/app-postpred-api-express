@@ -14,7 +14,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Hobbies
- *   description: API to manage your books.
+ *   description: API to manage your posts.
  *
  */
 

@@ -49,7 +49,8 @@ export const register = async (req, res) => {
 
     const token = jwt.sign(
       { email: result.email, id: result._id },
-      process.env.SECRET_TOKEN
+      process.env.SECRET_TOKEN,
+      { expiresIn: "24h" }
     );
     res.status(200).json({ result, token });
   } catch (error) {

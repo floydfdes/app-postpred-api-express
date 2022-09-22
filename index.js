@@ -38,15 +38,15 @@ app.use("/auth", authRouter);
 app.use("/posts", postRouter);
 
 app.get("/", (req, res) => {
-  res.send("This is my hobbies API");
+  res.send("This is PostPred API");
 });
 
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: "Hobbies API",
-      description: "This is a CRUD api for the hobbies app ",
-      version: "1.0.0",
+      title: "PostPred API",
+      description: "This is a CRUD api for the PostPred app ",
+      version: "2.0.0",
       contactName: {
         name: "Floyd Fernandes",
       },
