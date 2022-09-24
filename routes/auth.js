@@ -76,11 +76,15 @@ router.post("/login", login);
 
 /**
  * @swagger
- * /auth/editUser:
+ * /auth/editUser/{id}:
  *  post:
  *   summary: Edit User
  *   tags: [Auth]
  *   parameters:
+ *   - in: path
+ *     name: id
+ *     type: string
+ *     description: The Id to update.
  *   - in: formData
  *     name: firstName
  *     type: string
@@ -101,15 +105,19 @@ router.post("/login", login);
  *     '200':
  *       description: User Details changed successfully
  */
-router.post("/editUser", editUser);
+router.post("/editUser/:id", editUser);
 
 /**
  * @swagger
- * /auth/deleteUser:
+ * /auth/deleteUser/{id}:
  *  post:
  *   summary: delete User
  *   tags: [Auth]
  *   parameters:
+ *   - in: path
+ *     name: id
+ *     type: string
+ *     description: The Id to update.
  *   - in: formData
  *     name: email
  *     type: string
@@ -122,7 +130,7 @@ router.post("/editUser", editUser);
  *     '200':
  *       description: User Deleted
  */
-router.post("/deleteUser", deleteUser);
+router.post("/deleteUser/:id", deleteUser);
 
 /**
  * @swagger
