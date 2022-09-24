@@ -105,7 +105,7 @@ router.post("/login", login);
  *     '200':
  *       description: User Details changed successfully
  */
-router.post("/editUser/:id", editUser);
+router.patch("/editUser/:id", editUser);
 
 /**
  * @swagger
@@ -130,7 +130,7 @@ router.post("/editUser/:id", editUser);
  *     '200':
  *       description: User Deleted
  */
-router.post("/deleteUser/:id", deleteUser);
+router.delete("/deleteUser/:id", deleteUser);
 
 /**
  * @swagger
