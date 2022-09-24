@@ -22,7 +22,8 @@ export const login = async (req, res) => {
 
     const token = jwt.sign(
       { email: user.email, id: user._id },
-      process.env.SECRET_TOKEN
+      process.env.SECRET_TOKEN,
+      { expiresIn: "1h" }
     );
     res.status(200).json({ result: user, token });
   } catch (error) {
@@ -50,10 +51,51 @@ export const register = async (req, res) => {
     const token = jwt.sign(
       { email: result.email, id: result._id },
       process.env.SECRET_TOKEN,
-      { expiresIn: "24h" }
+      { expiresIn: "1h" }
     );
     res.status(200).json({ result, token });
   } catch (error) {
     res.status(404).json({ message: error });
   }
 };
+
+export const editUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { firstName, lastName, age, email } = req.body;
+    const uniqueEmail = await User.findOne({ email });
+    if (!uniqueEmail) return res.status(403).send("Email doesnt exists");
+    const updatedUser = new User({ firstName, lastName, age, _id: id });
+    const result = await User.findByIdAndUpdate(id, updatedUser, {
+      new: true,
+    });
+    const token = jwt.sign(
+      { email: result.email, id: result._id },
+      process.env.SECRET_TOKEN,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ result, token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).send("Email doesnt exists");
+
+    const validPass = await bcrypt.compare(password, user.password);
+    if (!validPass) return res.status(403).send("Password is not valid");
+
+    await User.findByIdAndRemove(id);
+    res.json({ message: "User deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const resetPassord = async () => {};

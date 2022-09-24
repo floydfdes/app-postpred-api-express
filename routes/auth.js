@@ -1,5 +1,11 @@
 import express from "express";
-import { login, register } from "../controllers/auth.js";
+import {
+  deleteUser,
+  editUser,
+  login,
+  register,
+  resetPassord,
+} from "../controllers/auth.js";
 
 const router = express.Router();
 /**
@@ -61,11 +67,86 @@ router.post("/register", register);
  *   - in: formData
  *     name: password
  *     type: string
- *     description: Enter your age.
+ *     description: Enter your password.
  *   responses:
  *     '200':
  *       description: user logged in
  */
 router.post("/login", login);
+
+/**
+ * @swagger
+ * /auth/editUser:
+ *  post:
+ *   summary: Edit User
+ *   tags: [Auth]
+ *   parameters:
+ *   - in: formData
+ *     name: firstName
+ *     type: string
+ *     description: Enter your First Name.
+ *   - in: formData
+ *     name: lastName
+ *     type: string
+ *     description: Enter your Last Name.
+ *   - in: formData
+ *     name: email
+ *     type: string
+ *     description: Enter your email.
+ *   - in: formData
+ *     name: age
+ *     type: string
+ *     description: Enter your Age.
+ *   responses:
+ *     '200':
+ *       description: User Details changed successfully
+ */
+router.post("/editUser", editUser);
+
+/**
+ * @swagger
+ * /auth/deleteUser:
+ *  post:
+ *   summary: delete User
+ *   tags: [Auth]
+ *   parameters:
+ *   - in: formData
+ *     name: email
+ *     type: string
+ *     description: Enter your email.
+ *   - in: formData
+ *     name: password
+ *     type: string
+ *     description: Enter your the password.
+ *   responses:
+ *     '200':
+ *       description: User Deleted
+ */
+router.post("/deleteUser", deleteUser);
+
+/**
+ * @swagger
+ * /auth/resetPassword:
+ *  post:
+ *   summary: reset password
+ *   tags: [Auth]
+ *   parameters:
+ *   - in: formData
+ *     name: oldPassword
+ *     type: string
+ *     description: Enter your current Password.
+ *   - in: formData
+ *     name: newPassword
+ *     type: string
+ *     description: Enter new Password.
+ *   - in: formData
+ *     name: confirmNewPassword
+ *     type: string
+ *     description: Confirm new Password.
+ *   responses:
+ *     '200':
+ *       description: User Details changed successfully
+ */
+router.post("/editUser", resetPassord);
 
 export default router;
