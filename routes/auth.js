@@ -77,7 +77,7 @@ router.post("/login", login);
 /**
  * @swagger
  * /auth/editUser/{id}:
- *  post:
+ *  patch:
  *   summary: Edit User
  *   tags: [Auth]
  *   parameters:
@@ -110,7 +110,7 @@ router.patch("/editUser/:id", editUser);
 /**
  * @swagger
  * /auth/deleteUser/{id}:
- *  post:
+ *  delete:
  *   summary: delete User
  *   tags: [Auth]
  *   parameters:

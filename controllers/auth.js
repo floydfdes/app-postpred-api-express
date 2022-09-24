@@ -85,8 +85,8 @@ export const deleteUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).send("Email doesnt exists");
+    const uniqueEmail = await User.findOne({ email });
+    if (!uniqueEmail) return res.status(403).send("Email doesnt exists");
 
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) return res.status(403).send("Password is not valid");
