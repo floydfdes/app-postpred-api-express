@@ -127,27 +127,19 @@ router.delete("/deleteUser/:id", authentication, deleteUser);
 
 /**
  * @swagger
- * /auth/resetPassword:
+ * /auth/resetPassword/{id}:
  *  post:
  *   summary: reset password
  *   tags: [Auth]
  *   parameters:
  *   - in: formData
- *     name: oldPassword
- *     type: string
- *     description: Enter your current Password.
- *   - in: formData
  *     name: newPassword
  *     type: string
  *     description: Enter new Password.
- *   - in: formData
- *     name: confirmNewPassword
- *     type: string
- *     description: Confirm new Password.
  *   responses:
  *     '200':
  *       description: User Details changed successfully
  */
-router.post("/editUser", resetPassord);
+router.patch("/resetPassword/:id", authentication, resetPassord);
 
 export default router;

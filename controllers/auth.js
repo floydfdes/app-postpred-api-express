@@ -91,4 +91,22 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-export const resetPassord = async () => {};
+export const resetPassord = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { newPassword } = req.body;
+    const hashPassword = await bcrypt.hash(newPassword, 12);
+    const updatedUser = new User({ password: hashPassword, _id: id });
+    const result = await User.findByIdAndUpdate(id, updatedUser, {
+      new: true,
+    });
+    const token = jwt.sign(
+      { email: result.email, id: result._id },
+      process.env.SECRET_TOKEN,
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ result, token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
