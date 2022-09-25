@@ -6,6 +6,7 @@ import {
   register,
   resetPassord,
 } from "../controllers/auth.js";
+import { authentication } from "./validateToken.js";
 
 const router = express.Router();
 /**
@@ -118,19 +119,11 @@ router.patch("/editUser/:id", editUser);
  *     name: id
  *     type: string
  *     description: The Id to update.
- *   - in: formData
- *     name: email
- *     type: string
- *     description: Enter your email.
- *   - in: formData
- *     name: password
- *     type: string
- *     description: Enter your the password.
  *   responses:
  *     '200':
  *       description: User Deleted
  */
-router.delete("/deleteUser/:id", deleteUser);
+router.delete("/deleteUser/:id", authentication, deleteUser);
 
 /**
  * @swagger
