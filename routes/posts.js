@@ -7,6 +7,7 @@ import {
   updatePost,
   likePost,
   deletePost,
+  getAllPosts,
 } from "../controllers/posts.js";
 
 const router = express.Router();
@@ -30,6 +31,18 @@ const router = express.Router();
  *       description: suceess
  */
 router.get("/", getPosts);
+
+/**
+ * @swagger
+ * /getALlPosts:
+ *  get:
+ *   summary: get all the posts
+ *   tags: [Hobbies]
+ *   responses:
+ *     '200':
+ *       description: suceess
+ */
+router.get("/getALlPosts", getAllPosts);
 
 /**
  * @swagger

@@ -110,3 +110,8 @@ export const resetPassord = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllUsers = async (req, res) => {
+  const users = await User.find();
+  res.send(users);
+};

@@ -98,5 +98,9 @@ export const likePost = async (req, res) => {
   const updatedPost = await Hobby.findByIdAndUpdate(id, post, { new: true });
   res.json(updatedPost);
 };
+export const getAllPosts = async (req, res) => {
+  const posts = await Hobby.find();
+  res.send(posts);
+};
 
 export default router;

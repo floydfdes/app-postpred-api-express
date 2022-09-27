@@ -2,6 +2,7 @@ import express from "express";
 import {
   deleteUser,
   editUser,
+  getAllUsers,
   login,
   register,
   resetPassord,
@@ -141,5 +142,17 @@ router.delete("/deleteUser/:id", authentication, deleteUser);
  *       description: User Details changed successfully
  */
 router.patch("/resetPassword/:id", authentication, resetPassord);
+
+/**
+ * @swagger
+ * /getALlUsers:
+ *  get:
+ *   summary: get all the posts
+ *   tags: [Hobbies]
+ *   responses:
+ *     '200':
+ *       description: suceess
+ */
+router.get("/getALlUsers", getAllUsers);
 
 export default router;
