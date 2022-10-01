@@ -8,6 +8,7 @@ import swaggerUI from "swagger-ui-express";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth.js";
 import postRouter from "./routes/posts.js";
+import contactRouter from "./routes/contact.js";
 
 const app = express();
 
@@ -36,6 +37,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use("/auth", authRouter);
 app.use("/posts", postRouter);
+app.use("/contact", contactRouter);
 
 app.get("/", (req, res) => {
   res.send("This is PostPred API");
@@ -68,7 +70,7 @@ const swaggerOptions = {
       in: "header",
     },
   },
-  apis: ["index.js", "routes/posts.js", "routes/auth.js"],
+  apis: ["index.js", "routes/posts.js", "routes/auth.js", "routes/contact.js"],
 };
 
 const swaggerDocs = swaggerDoc(swaggerOptions);
