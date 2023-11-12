@@ -1,11 +1,10 @@
+import Hobby from "../models/newHobby.js";
 import express from "express";
 import mongoose from "mongoose";
-import Hobby from "../models/newHobby.js";
 
 const router = express.Router();
 
 export const getPosts = async (req, res) => {
-  console.log("reaching here first");
   try {
     const Hobbys = await Hobby.find().sort({ date: -1 });
 
@@ -99,6 +98,7 @@ export const likePost = async (req, res) => {
   res.json(updatedPost);
 };
 export const getAllPosts = async (req, res) => {
+  console.log('object');
   const posts = await Hobby.find();
   res.send(posts);
 };

@@ -1,24 +1,21 @@
-import express from "express";
+import authRouter from "./routes/auth.js";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
+import contactRouter from "./routes/contact.js";
 import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import postRouter from "./routes/posts.js";
 import swaggerDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 
-import dotenv from "dotenv";
-import authRouter from "./routes/auth.js";
-import postRouter from "./routes/posts.js";
-import contactRouter from "./routes/contact.js";
-
 const app = express();
-
 dotenv.config();
-console.log("connected to api");
 
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 /**
  * security:
@@ -75,7 +72,11 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerDoc(swaggerOptions);
 
-app.use("/api", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use("/api", swaggerUI.serve, swaggerUI.setup(swaggerDocs, {
+  auth: {
+    url: "/auth",
+  },
+}));
 
 mongoose
   .connect(process.env.CONNECTION_URL, {

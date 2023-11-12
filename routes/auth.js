@@ -1,4 +1,3 @@
-import express from "express";
 import {
   deleteUser,
   editUser,
@@ -7,7 +6,9 @@ import {
   register,
   resetPassord,
 } from "../controllers/auth.js";
+
 import { authentication } from "./validateToken.js";
+import express from "express";
 
 const router = express.Router();
 /**
@@ -145,14 +146,14 @@ router.patch("/resetPassword/:id", authentication, resetPassord);
 
 /**
  * @swagger
- * /getALlUsers:
+ * /auth/getAllUsers:
  *  get:
- *   summary: get all the posts
- *   tags: [Hobbies]
+ *   summary: get all the users
+ *   tags: [Auth]
  *   responses:
  *     '200':
  *       description: suceess
  */
-router.get("/getALlUsers", getAllUsers);
+router.get("/getAllUsers", getAllUsers);
 
 export default router;

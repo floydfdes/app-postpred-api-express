@@ -1,14 +1,15 @@
-import express from "express";
-import { authentication } from "./validateToken.js";
 import {
-  getPosts,
-  getPost,
   createPost,
-  updatePost,
-  likePost,
   deletePost,
   getAllPosts,
+  getPost,
+  getPosts,
+  likePost,
+  updatePost,
 } from "../controllers/posts.js";
+
+import { authentication } from "./validateToken.js";
+import express from "express";
 
 const router = express.Router();
 /**
@@ -34,7 +35,7 @@ router.get("/", getPosts);
 
 /**
  * @swagger
- * /getALlPosts:
+ * /posts/getAllPosts:
  *  get:
  *   summary: get all the posts
  *   tags: [Hobbies]
@@ -42,7 +43,7 @@ router.get("/", getPosts);
  *     '200':
  *       description: suceess
  */
-router.get("/getALlPosts", getAllPosts);
+router.get("/posts/getAllPosts", getAllPosts);
 
 /**
  * @swagger

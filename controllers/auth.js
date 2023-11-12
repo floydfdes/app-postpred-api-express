@@ -1,10 +1,11 @@
-import express from "express";
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { loginValidation, registerValidation } from "../Validation/validate.js";
+
 import User from "../models/user.js";
-import { registerValidation, loginValidation } from "../Validation/validate.js";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+import express from "express";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -112,6 +113,13 @@ export const resetPassord = async (req, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
-  const users = await User.find();
-  res.send(users);
+  try {
+    const users = await User.findById()
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(error.statusCode).json({ message: error.message });
+  }
+
+
+
 };
