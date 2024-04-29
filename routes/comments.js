@@ -1,4 +1,4 @@
-import { createComment, updateComment } from "../controllers/comments.js";
+import { createComment, deleteComment, updateComment } from "../controllers/comments.js";
 
 import { authentication } from "./validateToken.js";
 import express from "express";
@@ -71,5 +71,34 @@ router.post("/:id/comments", authentication, createComment);
  *       description: Internal server error.
  */
 router.patch("/:postId/comments/:commentId", authentication, updateComment);
+
+/**
+ * @swagger
+ * /posts/{postId}/comments/{commentId}:
+ *  delete:
+ *   summary: Delete a comment on a post
+ *   tags: [Comments]
+ *   parameters:
+ *   - in: path
+ *     name: postId
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: Post ID containing the comment.
+ *   - in: path
+ *     name: commentId
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: Comment ID to be deleted.
+ *   responses:
+ *     '200':
+ *       description: Comment deleted successfully.
+ *     '404':
+ *       description: Post or comment not found.
+ *     '500':
+ *       description: Internal server error.
+ */
+router.delete("/:postId/comments/:commentId", deleteComment);
 
 export default router;

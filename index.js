@@ -1,5 +1,6 @@
 import authRouter from "./routes/auth.js";
 import bodyParser from "body-parser";
+import commentRouter from "./routes/comments.js"
 import contactRouter from "./routes/contact.js";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -34,30 +35,31 @@ const PORT = process.env.PORT || 1337;
 
 app.use("/auth", authRouter);
 app.use("/posts", postRouter);
+app.use("/comment", commentRouter);
 app.use("/contact", contactRouter);
 
 app.get("/", (req, res) => {
-  res.send("This is PostPred API");
+  res.send("This is HobbyNest API");
 });
 
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: "PostPred API",
-      description: "This is a CRUD api for the PostPred app ",
+      title: "HobbyNest API",
+      description: "This is a CRUD api for the HobbyNest app ",
       version: "2.0.0",
       contactName: {
         name: "Floyd Fernandes",
       },
       contact: {
         name: "Floyd Fernandes",
-        url: "https://postpred.netlify.app/",
+        url: "https://hobbynest.netlify.app/",
         email: "floydprogrammer@gmail.com",
       },
       servers: ["https://hobbies-project.herokuapp.com/posts"],
     },
   },
-  host: "https://postpred.netlify.app/",
+  host: "https://hobbynest.netlify.app/",
   basePath: "/",
   securityDefinitions: {
     bearerAuth: {
@@ -67,7 +69,7 @@ const swaggerOptions = {
       in: "header",
     },
   },
-  apis: ["index.js", "routes/posts.js", "routes/auth.js", "routes/contact.js"],
+  apis: ["index.js", "routes/posts.js", "routes/comments.js", "routes/auth.js", "routes/contact.js"],
 };
 
 const swaggerDocs = swaggerDoc(swaggerOptions);
