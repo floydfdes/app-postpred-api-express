@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+const commentSchema = new mongoose.Schema({
+  content: String,
+  userId: String, // Assuming user IDs are stored as strings
+  createdAt: {
+    type: Date,
+    default: new Date().getTime(),
+  },
+});
+
+
 const postSchema = new mongoose.Schema({
   title: String,
 
@@ -15,6 +25,7 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: new Date().getTime(),
   },
+  comments: [commentSchema]
 });
 
 var Hobby = mongoose.model("Hobby", postSchema);
