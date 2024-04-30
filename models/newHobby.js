@@ -2,7 +2,19 @@ import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
   content: String,
-  userId: String, // Assuming user IDs are stored as strings
+  userId: String,
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  dislikes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
   createdAt: {
     type: Date,
     default: new Date().getTime(),

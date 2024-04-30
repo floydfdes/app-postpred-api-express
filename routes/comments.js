@@ -1,4 +1,4 @@
-import { createComment, deleteComment, updateComment } from "../controllers/comments.js";
+import { createComment, deleteComment, dislikeComment, likeComment, updateComment } from "../controllers/comments.js";
 
 import { authentication } from "./validateToken.js";
 import express from "express";
@@ -74,7 +74,7 @@ router.patch("/:postId/comments/:commentId", authentication, updateComment);
 
 /**
  * @swagger
- * /posts/{postId}/comments/{commentId}:
+ * /{postId}/comments/{commentId}:
  *  delete:
  *   summary: Delete a comment on a post
  *   tags: [Comments]
@@ -99,6 +99,72 @@ router.patch("/:postId/comments/:commentId", authentication, updateComment);
  *     '500':
  *       description: Internal server error.
  */
-router.delete("/:postId/comments/:commentId", deleteComment);
+router.delete("/:postId/comments/:commentId", authentication, deleteComment);
+
+/**
+ * @swagger
+ * /{postId}/comments/{commentId}/like:
+ *  post:
+ *   summary: Like a comment on a post
+ *   tags: [Comments]
+ *   parameters:
+ *   - in: path
+ *     name: postId
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: Post ID containing the comment.
+ *   - in: path
+ *     name: commentId
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: Comment ID to be liked.
+ *   security:
+ *   - bearerAuth: []
+ *   responses:
+ *     '200':
+ *       description: Comment liked successfully.
+ *     '400':
+ *       description: You already liked this comment or invalid request.
+ *     '404':
+ *       description: Post or comment not found.
+ *     '500':
+ *       description: Internal server error.
+ */
+router.post('/:postId/comments/:commentId/like', authentication, likeComment)
+
+/**
+ * @swagger
+ * /{postId}/comments/{commentId}/dislike:
+ *  post:
+ *   summary: Dislike a comment on a post
+ *   tags: [Comments]
+ *   parameters:
+ *   - in: path
+ *     name: postId
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: Post ID containing the comment.
+ *   - in: path
+ *     name: commentId
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: Comment ID to be disliked.
+ *   security:
+ *   - bearerAuth: []
+ *   responses:
+ *     '200':
+ *       description: Comment disliked successfully.
+ *     '400':
+ *       description: You already disliked this comment or invalid request.
+ *     '404':
+ *       description: Post or comment not found.
+ *     '500':
+ *       description: Internal server error.
+ */
+router.post('/:postId/comments/:commentId/dislike', authentication, dislikeComment)
 
 export default router;

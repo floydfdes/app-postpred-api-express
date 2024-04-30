@@ -18,7 +18,7 @@ export const createComment = async (req, res) => {
 
         await post.save();
 
-        res.status(201).json(newComment);
+        res.status(200).json(post);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -45,14 +45,14 @@ export const updateComment = async (req, res) => {
 
         await post.save();
 
-        res.status(200).json(post.comments[commentIndex]);
+        res.status(200).json(post);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
 export const deleteComment = async (req, res) => {
-    const { postId, commentId } = req.params; // Post ID and Comment ID
+    const { postId, commentId } = req.params;
 
     try {
         const post = await Hobby.findById(postId);
@@ -67,12 +67,89 @@ export const deleteComment = async (req, res) => {
             return res.status(404).json({ message: "Comment not found" });
         }
 
-        post.comments.splice(commentIndex, 1); // Remove the comment from the array
+        post.comments.splice(commentIndex, 1);
 
         await post.save();
 
-        res.status(200).json({ message: "Comment deleted successfully" });
+        res.status(200).json(post);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const likeComment = async (req, res) => {
+
+    const { postId, commentId } = req.params;
+    const userId = req.userId;
+
+
+    try {
+        const post = await Hobby.findById(postId);
+        console.log(post);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        const comment = post.comments.id(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+
+        if (comment.likes.includes(userId)) {
+            return res.status(400).json({ message: 'You already liked this comment' });
+        }
+
+        if (comment.dislikes.includes(userId)) {
+            comment.dislikes.pull(userId);
+        }
+
+        comment.likes.push(userId);
+        await post.save();
+
+        const updatedPost = await Hobby.findById(postId).populate('comments');
+        res.status(200).json({ message: 'Comment liked successfully', post: updatedPost });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+
+export const dislikeComment = async (req, res) => {
+    const { postId, commentId } = req.params;
+    const userId = req.userId;
+
+    try {
+        const post = await Hobby.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        const comment = post.comments.id(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+
+        if (comment.dislikes.includes(userId)) {
+            return res.status(400).json({ message: 'You already disliked this comment' });
+        }
+
+        if (comment.likes.includes(userId)) {
+            comment.likes.pull(userId);
+        }
+
+        comment.dislikes.push(userId);
+        await post.save();
+
+        // Send back the updated post
+        const updatedPost = await Hobby.findById(postId).populate('comments');
+        res.status(200).json({ message: 'Comment disliked successfully', post: updatedPost });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
