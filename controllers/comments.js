@@ -14,6 +14,7 @@ export const createComment = async (req, res) => {
         }
 
         const newComment = { content, userId };
+
         post.comments.push(newComment);
 
         await post.save();
@@ -96,15 +97,17 @@ export const likeComment = async (req, res) => {
             return res.status(404).json({ message: 'Comment not found' });
         }
 
-        if (comment.likes.includes(userId)) {
-            return res.status(400).json({ message: 'You already liked this comment' });
-        }
-
         if (comment.dislikes.includes(userId)) {
             comment.dislikes.pull(userId);
         }
 
-        comment.likes.push(userId);
+        if (comment.likes.includes(userId)) {
+            comment.likes = comment.likes.filter((id) => id !== String(userId));
+        }
+        else {
+            comment.likes.push(userId);
+        }
+
         await post.save();
 
         const updatedPost = await Hobby.findById(postId).populate('comments');
@@ -133,15 +136,18 @@ export const dislikeComment = async (req, res) => {
             return res.status(404).json({ message: 'Comment not found' });
         }
 
-        if (comment.dislikes.includes(userId)) {
-            return res.status(400).json({ message: 'You already disliked this comment' });
-        }
-
         if (comment.likes.includes(userId)) {
             comment.likes.pull(userId);
         }
 
-        comment.dislikes.push(userId);
+        if (comment.dislikes.includes(userId)) {
+            comment.dislikes = comment.dislikes.filter((id) => id !== String(userId));
+        }
+        else {
+            comment.dislikes.push(userId);
+        }
+
+
         await post.save();
 
         // Send back the updated post
