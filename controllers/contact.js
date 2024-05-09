@@ -1,4 +1,3 @@
-import Contact from "../models/contact.js";
 import express from "express";
 import { transporter } from "../utills/email.js";
 

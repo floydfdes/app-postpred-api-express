@@ -4,11 +4,11 @@ import {
   getAllUsers,
   login,
   register,
-  resetPassord,
+  resetPassword,
 } from "../controllers/auth.js";
 
-import { authentication } from "./validateToken.js";
 import express from "express";
+import { authentication } from "./validateToken.js";
 
 const router = express.Router();
 /**
@@ -142,7 +142,7 @@ router.delete("/deleteUser/:id", authentication, deleteUser);
  *     '200':
  *       description: User Details changed successfully
  */
-router.patch("/resetPassword/:id", authentication, resetPassord);
+router.patch("/resetPassword/:id", authentication, resetPassword);
 
 /**
  * @swagger

@@ -1,14 +1,14 @@
-import authRouter from "./routes/auth.js";
-import bodyParser from "body-parser";
-import commentRouter from "./routes/comments.js"
-import contactRouter from "./routes/contact.js";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import postRouter from "./routes/posts.js";
 import swaggerDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import authRouter from "./routes/auth.js";
+import commentRouter from "./routes/comments.js";
+import contactRouter from "./routes/contact.js";
+import postRouter from "./routes/posts.js";
+import roleRouter from "./routes/roles.js";
 
 const app = express();
 dotenv.config();
@@ -37,6 +37,7 @@ app.use("/auth", authRouter);
 app.use("/posts", postRouter);
 app.use("/comment", commentRouter);
 app.use("/contact", contactRouter);
+app.use("/role", roleRouter);
 
 app.get("/", (req, res) => {
   res.send("This is HobbyNest API");
@@ -69,10 +70,14 @@ const swaggerOptions = {
       in: "header",
     },
   },
-  apis: ["index.js", "routes/posts.js", "routes/comments.js", "routes/auth.js", "routes/contact.js"],
+  apis: ["index.js", "routes/posts.js", "routes/comments.js", "routes/auth.js", "routes/contact.js", "routes/roles.js"],
 };
 
 const swaggerDocs = swaggerDoc(swaggerOptions);
+
+
+app.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDocs));
+
 
 app.use("/api", swaggerUI.serve, swaggerUI.setup(swaggerDocs, {
   auth: {

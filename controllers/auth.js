@@ -1,11 +1,7 @@
-import { loginValidation, registerValidation } from "../Validation/validate.js";
-
-import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import express from "express";
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
+import User from "../models/user.js";
 
 dotenv.config();
 
@@ -92,7 +88,7 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-export const resetPassord = async (req, res) => {
+export const resetPassword = async (req, res) => {
   const { id } = req.params;
   try {
     const { newPassword } = req.body;

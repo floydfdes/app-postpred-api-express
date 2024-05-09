@@ -1,6 +1,6 @@
-import Hobby from "../models/newHobby.js";
 import express from "express";
-import mongoose from "mongoose";
+import Hobby from "../models/newHobby.js";
+import { sendNotification } from "./notification.js";
 
 const router = express.Router();
 
@@ -95,10 +95,19 @@ export const likePost = async (req, res) => {
   }
 
   const updatedPost = await Hobby.findByIdAndUpdate(id, post, { new: true });
+
+  if (index === -1) {
+    const senderId = req.userId;
+    const recipientId = updatedPost.creator;
+    const type = 'like';
+    const postId = updatedPost._id;
+    const commentId = null;
+    await sendNotification(recipientId, type, postId, commentId, senderId);
+  }
   res.json(updatedPost);
 };
+
 export const getAllPosts = async (req, res) => {
-  console.log('object');
   const posts = await Hobby.find();
   res.send(posts);
 };

@@ -8,8 +8,8 @@ import {
   updatePost,
 } from "../controllers/posts.js";
 
-import { authentication } from "./validateToken.js";
 import express from "express";
+import { authentication } from "./validateToken.js";
 
 const router = express.Router();
 /**
