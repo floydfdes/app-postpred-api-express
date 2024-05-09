@@ -1,11 +1,12 @@
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 dotenv.config();
 
 export const authentication = (req, res, next) => {
   console.log("authentication");
 
   try {
+
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) res.status(401).send("access denied");

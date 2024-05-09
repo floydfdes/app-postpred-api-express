@@ -1,6 +1,5 @@
-import Hobby from "../models/newHobby.js";
 import express from "express";
-import mongoose from "mongoose";
+import Hobby from "../models/newHobby.js";
 import { sendNotification } from "./notification.js";
 
 const router = express.Router();
