@@ -8,8 +8,8 @@ import {
   updatePost,
 } from "../controllers/posts.js";
 
-import { authentication } from "./validateToken.js";
 import express from "express";
+import { authentication } from "./validateToken.js";
 
 const router = express.Router();
 /**
@@ -59,11 +59,17 @@ router.get("/posts/getAllPosts", getAllPosts);
  *   - in: formData
  *     name: description
  *     type: string
- *     description: Enter  post description.
+ *     description: Enter post description.
  *   - in: formData
  *     name: tags
- *     type: [string]
+ *     type: array
+ *     items:
+ *       type: string
  *     description: Tags related to your hobbies.
+ *   - in: formData
+ *     name: image
+ *     type: string
+ *     description: Base64 encoded image.
  *   responses:
  *     '201':
  *       description: post was created
@@ -75,7 +81,7 @@ router.get("/:id", getPost);
  * @swagger
  * /posts/{id}:
  *  patch:
- *   summary: update a  post
+ *   summary: update a post
  *   tags: [Hobbies]
  *   parameters:
  *   - in: path
@@ -92,11 +98,16 @@ router.get("/:id", getPost);
  *     description: Enter your description.
  *   - in: formData
  *     name: tags
- *     type: [string]
+ *     type: array
+ *     items:
+ *       type: string
  *     description: Tags related to your hobbies.
-
+ *   - in: formData
+ *     name: image
+ *     type: string
+ *     description: Base64 encoded image.
  *   responses:
- *     '201':
+ *     '200':
  *       description: post was updated
  */
 router.patch("/:id", authentication, updatePost);
