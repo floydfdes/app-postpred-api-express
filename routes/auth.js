@@ -7,8 +7,9 @@ import {
   resetPassord,
 } from "../controllers/auth.js";
 
-import { authentication } from "./validateToken.js";
 import express from "express";
+import { isAdmin } from "../middleware/admin.js"; // Adjust the import based on your middleware path
+import { authentication } from "./validateToken.js";
 
 const router = express.Router();
 /**
@@ -144,16 +145,19 @@ router.delete("/deleteUser/:id", authentication, deleteUser);
  */
 router.patch("/resetPassword/:id", authentication, resetPassord);
 
+
 /**
  * @swagger
- * /auth/getAllUsers:
+ * /auth/users:
  *  get:
- *   summary: get all the users
+ *   summary: Fetch all users
  *   tags: [Auth]
  *   responses:
  *     '200':
- *       description: suceess
+ *       description: Successfully retrieved users
+ *     '404':
+ *       description: No users found
  */
-router.get("/getAllUsers", getAllUsers);
+router.get("/users", authentication, isAdmin, getAllUsers);
 
 export default router;

@@ -1,11 +1,8 @@
-import { loginValidation, registerValidation } from "../Validation/validate.js";
 
-import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
-import express from "express";
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
+import User from "../models/user.js";
 
 dotenv.config();
 
@@ -114,12 +111,14 @@ export const resetPassord = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findById()
-    res.status(200).json({ users });
+    const users = await User.find();
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.status(200).json(users);
   } catch (error) {
-    res.status(error.statusCode).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
-
-
-
 };

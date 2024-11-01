@@ -158,4 +158,19 @@ export const dislikeComment = async (req, res) => {
     }
 }
 
+export const getAllComments = async (req, res) => {
+    try {
+        const comments = await Hobby.find().select("comments");
+        const allComments = comments.flatMap(post => post.comments);
+
+        if (allComments.length === 0) {
+            return res.status(404).json({ message: "No comments found" });
+        }
+
+        res.status(200).json(allComments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 

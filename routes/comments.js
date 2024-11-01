@@ -1,7 +1,9 @@
-import { createComment, deleteComment, dislikeComment, likeComment, updateComment } from "../controllers/comments.js";
+import { createComment, deleteComment, dislikeComment, getAllComments, likeComment, updateComment } from "../controllers/comments.js";
 
-import { authentication } from "./validateToken.js";
 import express from "express";
+import { isAdmin } from "../middleware/admin.js";
+import { authentication } from "./validateToken.js";
+
 
 const router = express.Router();
 
@@ -166,5 +168,19 @@ router.post('/:postId/comments/:commentId/like', authentication, likeComment)
  *       description: Internal server error.
  */
 router.post('/:postId/comments/:commentId/dislike', authentication, dislikeComment)
+
+/**
+ * @swagger
+ * /comments:
+ *  get:
+ *   summary: Fetch all comments
+ *   tags: [Comments]
+ *   responses:
+ *     '200':
+ *       description: Successfully retrieved comments
+ *     '404':
+ *       description: No comments found
+ */
+router.get("/", authentication, isAdmin, getAllComments);
 
 export default router;
