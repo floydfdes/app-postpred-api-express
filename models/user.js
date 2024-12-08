@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  profilePicture: {
+    type: String,
+    default: '',
+  },
 });
 
 var User = mongoose.model("User", userSchema);

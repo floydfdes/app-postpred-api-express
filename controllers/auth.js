@@ -1,4 +1,3 @@
-
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
@@ -60,18 +59,30 @@ export const register = async (req, res) => {
 export const editUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const { firstName, lastName, age, email } = req.body;
+    const { firstName, lastName, age, email, profilePicture } = req.body;
+
     const uniqueEmail = await User.findOne({ email });
-    if (!uniqueEmail) return res.status(403).send("Email doesnt exists");
-    const updatedUser = new User({ firstName, lastName, age, _id: id });
-    const result = await User.findByIdAndUpdate(id, updatedUser, {
-      new: true,
-    });
+    if (uniqueEmail && uniqueEmail._id.toString() !== id) {
+      return res.status(403).send("Email already in use by another user.");
+    }
+
+    const updatedData = { firstName, lastName, age, email };
+    if (profilePicture) {
+      updatedData.profilePicture = profilePicture;
+    }
+
+    const result = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (!result) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
     const token = jwt.sign(
       { email: result.email, id: result._id },
       process.env.SECRET_TOKEN,
       { expiresIn: "1h" }
     );
+
     res.status(200).json({ result, token });
   } catch (error) {
     res.status(500).json({ message: error.message });

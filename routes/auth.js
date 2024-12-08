@@ -87,27 +87,44 @@ router.post("/login", login);
  *   parameters:
  *   - in: path
  *     name: id
- *     type: string
- *     description: The Id to update.
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: The ID of the user to update.
  *   - in: formData
  *     name: firstName
- *     type: string
+ *     schema:
+ *       type: string
  *     description: Enter your First Name.
  *   - in: formData
  *     name: lastName
- *     type: string
+ *     schema:
+ *       type: string
  *     description: Enter your Last Name.
  *   - in: formData
  *     name: email
- *     type: string
+ *     schema:
+ *       type: string
  *     description: Enter your email.
  *   - in: formData
  *     name: age
- *     type: string
+ *     schema:
+ *       type: string
  *     description: Enter your Age.
+ *   - in: formData
+ *     name: profilePicture
+ *     schema:
+ *       type: string
+ *     description: Base64-encoded string of the profile picture.
  *   responses:
  *     '200':
- *       description: User Details changed successfully
+ *       description: User details changed successfully.
+ *     '403':
+ *       description: Email already in use by another user.
+ *     '404':
+ *       description: User not found.
+ *     '500':
+ *       description: Internal server error.
  */
 router.patch("/editUser/:id", editUser);
 
