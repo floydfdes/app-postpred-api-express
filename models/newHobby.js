@@ -33,6 +33,10 @@ const postSchema = new mongoose.Schema({
   },
   creatorName: String,
   creator: String,
+  postImage: {
+    type: String,
+    default: "",
+  },
   date: {
     type: Date,
     default: new Date().getTime(),

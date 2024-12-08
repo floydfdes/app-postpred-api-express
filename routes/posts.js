@@ -49,27 +49,38 @@ router.get("/posts/getAllPosts", getAllPosts);
  * @swagger
  * /posts:
  *  post:
- *   summary: create a post
+ *   summary: Create a post
  *   tags: [Hobbies]
- *   parameters:
- *   - in: formData
- *     name: title
- *     type: string
- *     description: Enter post title.
- *   - in: formData
- *     name: description
- *     type: string
- *     description: Enter  post description.
- *   - in: formData
- *     name: tags
- *     type: [string]
- *     description: Tags related to your hobbies.
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *               description: Enter post title.
+ *             description:
+ *               type: string
+ *               description: Enter post description.
+ *             tags:
+ *               type: array
+ *               items:
+ *                 type: string
+ *               description: Tags related to your hobbies.
+ *             postImage:
+ *               type: string
+ *               description: Base64 string for the post image.
  *   responses:
  *     '201':
- *       description: post was created
+ *       description: Post was created.
+ *     '400':
+ *       description: Bad request.
+ *     '500':
+ *       description: Internal server error.
  */
 router.post("/", authentication, createPost);
-
 
 /**
  * @swagger
@@ -184,31 +195,48 @@ router.get("/:id", getPost);
  * @swagger
  * /posts/{id}:
  *  patch:
- *   summary: update a  post
+ *   summary: Update a post
  *   tags: [Hobbies]
  *   parameters:
  *   - in: path
  *     name: id
- *     type: string
- *     description: The id you want to update.
- *   - in: formData
- *     name: title
- *     type: string
- *     description: Enter your title.
- *   - in: formData
- *     name: description
- *     type: string
- *     description: Enter your description.
- *   - in: formData
- *     name: tags
- *     type: [string]
- *     description: Tags related to your hobbies.
-
+ *     required: true
+ *     schema:
+ *       type: string
+ *     description: The ID of the post you want to update.
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *               description: Enter your title.
+ *             description:
+ *               type: string
+ *               description: Enter your description.
+ *             tags:
+ *               type: array
+ *               items:
+ *                 type: string
+ *               description: Tags related to your hobbies.
+ *             postImage:
+ *               type: string
+ *               description: Base64 string for the post image.
  *   responses:
- *     '201':
- *       description: post was updated
+ *     '200':
+ *       description: Post was updated.
+ *     '400':
+ *       description: Bad request.
+ *     '404':
+ *       description: Post not found.
+ *     '500':
+ *       description: Internal server error.
  */
 router.patch("/:id", authentication, updatePost);
+
 
 /**
  * @swagger

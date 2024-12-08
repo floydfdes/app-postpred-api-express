@@ -1,6 +1,5 @@
-import Hobby from "../models/newHobby.js";
 import express from "express";
-import mongoose from "mongoose";
+import Hobby from "../models/newHobby.js";
 
 const router = express.Router();
 
@@ -32,42 +31,47 @@ export const createPost = async (req, res) => {
   const newPost = new Hobby({
     ...body,
     creator: req.userId,
+    postImage: body.postImage || "",
   });
 
   try {
     await newPost.save();
-
     res.status(201).json(newPost);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
 };
 
+
 export const updatePost = async (req, res) => {
   const { id } = req.params;
-  var { title, tags, description, likes } = req.body;
-  var post = await Hobby.findById(id);
-  if (!title) {
-    title = post.title;
-  }
+  const { title, tags, description, likes, postImage } = req.body;
 
-  if (!description) {
-    description = post.description;
-  }
-  if (!tags) {
-    tags = post.tags;
-  }
-  if (!likes) {
-    likes = post.likes;
-  }
-  // if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+  try {
+    const post = await Hobby.findById(id);
 
-  const updatedPost = new Hobby({ title, description, tags, _id: id, likes });
-  console.log(updatedPost);
-  await Hobby.findByIdAndUpdate(id, updatedPost, { new: true });
+    if (!post) {
+      return res.status(404).send(`No post found with id: ${id}`);
+    }
 
-  res.json(updatedPost);
+    const updatedData = {
+      title: title || post.title,
+      description: description || post.description,
+      tags: tags || post.tags,
+      likes: likes || post.likes,
+      postImage: postImage || post.postImage,
+    };
+
+    const updatedPost = await Hobby.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+
+    res.json(updatedPost);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
 
 export const deletePost = async (req, res) => {
   const { id } = req.params;
