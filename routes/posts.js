@@ -7,8 +7,10 @@ import {
   likePost,
   updatePost,
 } from "../controllers/posts.js";
+import { createPostSchema, updatePostSchema } from "../validation/postValidation.js";
 
 import express from "express";
+import { validateRequest } from "../middleware/validateRequest.js";
 import { authentication } from "./validateToken.js";
 
 const router = express.Router();
@@ -80,7 +82,7 @@ router.get("/posts/getAllPosts", getAllPosts);
  *     '500':
  *       description: Internal server error.
  */
-router.post("/", authentication, createPost);
+router.post("/", authentication, validateRequest(createPostSchema), createPost);
 
 /**
  * @swagger
@@ -235,7 +237,8 @@ router.get("/:id", getPost);
  *     '500':
  *       description: Internal server error.
  */
-router.patch("/:id", authentication, updatePost);
+router.patch("/:id", authentication, validateRequest(updatePostSchema), updatePost);
+
 
 
 /**

@@ -1,14 +1,13 @@
-import authRouter from "./routes/auth.js";
-import bodyParser from "body-parser";
-import commentRouter from "./routes/comments.js"
-import contactRouter from "./routes/contact.js";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-import postRouter from "./routes/posts.js";
 import swaggerDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+import authRouter from "./routes/auth.js";
+import commentRouter from "./routes/comments.js";
+import contactRouter from "./routes/contact.js";
+import postRouter from "./routes/posts.js";
 
 const app = express();
 dotenv.config();
@@ -46,20 +45,20 @@ const swaggerOptions = {
   swaggerDefinition: {
     info: {
       title: "HobbyNest API",
-      description: "This is a CRUD api for the HobbyNest app ",
+      description: "This is a CRUD api for the InterestHub app ",
       version: "2.0.0",
       contactName: {
         name: "Floyd Fernandes",
       },
       contact: {
         name: "Floyd Fernandes",
-        url: "https://hobbynest.netlify.app/",
+        url: "https://interesthub.netlify.app/",
         email: "floydprogrammer@gmail.com",
       },
       servers: ["https://hobbies-project.herokuapp.com/posts"],
     },
   },
-  host: "https://hobbynest.netlify.app/",
+  host: "https://interesthub.netlify.app/",
   basePath: "/",
   securityDefinitions: {
     bearerAuth: {

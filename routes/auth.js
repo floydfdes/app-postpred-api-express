@@ -6,9 +6,11 @@ import {
   register,
   resetPassord,
 } from "../controllers/auth.js";
+import { editUserSchema, loginSchema, registerSchema, resetPasswordSchema } from "../validation/userValidation.js";
 
 import express from "express";
 import { isAdmin } from "../middleware/admin.js"; // Adjust the import based on your middleware path
+import { validateRequest } from "../middleware/validateRequest.js";
 import { authentication } from "./validateToken.js";
 
 const router = express.Router();
@@ -55,7 +57,7 @@ const router = express.Router();
  *     '200':
  *       description: user logged in
  */
-router.post("/register", register);
+router.post("/register", validateRequest(registerSchema), register);
 
 /**
  * @swagger
@@ -76,7 +78,7 @@ router.post("/register", register);
  *     '200':
  *       description: user logged in
  */
-router.post("/login", login);
+router.post("/login", validateRequest(loginSchema), login);
 
 /**
  * @swagger
@@ -126,7 +128,7 @@ router.post("/login", login);
  *     '500':
  *       description: Internal server error.
  */
-router.patch("/editUser/:id", editUser);
+router.patch("/editUser/:id", validateRequest(editUserSchema), editUser);
 
 /**
  * @swagger
@@ -160,7 +162,7 @@ router.delete("/deleteUser/:id", authentication, deleteUser);
  *     '200':
  *       description: User Details changed successfully
  */
-router.patch("/resetPassword/:id", authentication, resetPassord);
+router.patch("/resetPassword/:id", authentication, validateRequest(resetPasswordSchema), resetPassord);
 
 
 /**
