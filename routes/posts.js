@@ -17,7 +17,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Hobbies
+ *   name: Interest
  *   description: API to manage your posts.
  *
  */
