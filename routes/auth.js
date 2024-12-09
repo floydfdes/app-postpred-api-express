@@ -9,53 +9,60 @@ import {
 import { editUserSchema, loginSchema, registerSchema, resetPasswordSchema } from "../validation/userValidation.js";
 
 import express from "express";
-import { isAdmin } from "../middleware/admin.js"; // Adjust the import based on your middleware path
+import { isAdmin } from "../middleware/admin.js";
 import { validateRequest } from "../middleware/validateRequest.js";
 import { authentication } from "./validateToken.js";
 
 const router = express.Router();
+
 /**
  * @swagger
  * tags:
  *   name: Auth
  *   description: API to manage your auth.
- *
  */
 
 /**
  * @swagger
  * /auth/register:
  *  post:
- *   summary: login
+ *   summary: Register a new user
  *   tags: [Auth]
- *   parameters:
- *   - in: formData
- *     name: firstName
- *     type: string
- *     description: Enter your first Name.
- *   - in: formData
- *     name: lastName
- *     type: string
- *     description: Enter your last Name.
- *   - in: formData
- *     name: age
- *     type: number
- *     description: Enter your age.
- *   - in: formData
- *     name: gender
- *     type: string
- *     description: Enter your gender.
- *   - in: formData
- *     name: email
- *     type: string
- *     description: Enter your email.
- *   - in: formData
- *     name: password
- *     type: string
- *     description: Enter your password.
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *               description: Enter your first name.
+ *             lastName:
+ *               type: string
+ *               description: Enter your last name.
+ *             age:
+ *               type: number
+ *               description: Enter your age.
+ *             gender:
+ *               type: string
+ *               description: Enter your gender.
+ *             email:
+ *               type: string
+ *               description: Enter your email.
+ *             password:
+ *               type: string
+ *               description: Enter your password.
+ *           required:
+ *             - firstName
+ *             - lastName
+ *             - age
+ *             - gender
+ *             - email
+ *             - password
  *   responses:
  *     '200':
- *       description: user logged in
+ *       description: User registered successfully.
  */
 router.post("/register", validateRequest(registerSchema), register);
 
@@ -63,20 +70,27 @@ router.post("/register", validateRequest(registerSchema), register);
  * @swagger
  * /auth/login:
  *  post:
- *   summary: login
+ *   summary: Login a user
  *   tags: [Auth]
- *   parameters:
- *   - in: formData
- *     name: email
- *     type: string
- *     description: Enter your name.
- *   - in: formData
- *     name: password
- *     type: string
- *     description: Enter your password.
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *               description: Enter your email.
+ *             password:
+ *               type: string
+ *               description: Enter your password.
+ *           required:
+ *             - email
+ *             - password
  *   responses:
  *     '200':
- *       description: user logged in
+ *       description: User logged in successfully.
  */
 router.post("/login", validateRequest(loginSchema), login);
 
@@ -84,43 +98,40 @@ router.post("/login", validateRequest(loginSchema), login);
  * @swagger
  * /auth/editUser/{id}:
  *  patch:
- *   summary: Edit User
+ *   summary: Edit a user's details
  *   tags: [Auth]
  *   parameters:
- *   - in: path
- *     name: id
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: string
+ *       description: The ID of the user to update.
+ *   requestBody:
  *     required: true
- *     schema:
- *       type: string
- *     description: The ID of the user to update.
- *   - in: formData
- *     name: firstName
- *     schema:
- *       type: string
- *     description: Enter your First Name.
- *   - in: formData
- *     name: lastName
- *     schema:
- *       type: string
- *     description: Enter your Last Name.
- *   - in: formData
- *     name: email
- *     schema:
- *       type: string
- *     description: Enter your email.
- *   - in: formData
- *     name: age
- *     schema:
- *       type: string
- *     description: Enter your Age.
- *   - in: formData
- *     name: profilePicture
- *     schema:
- *       type: string
- *     description: Base64-encoded string of the profile picture.
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             firstName:
+ *               type: string
+ *               description: Enter your first name.
+ *             lastName:
+ *               type: string
+ *               description: Enter your last name.
+ *             email:
+ *               type: string
+ *               description: Enter your email.
+ *             age:
+ *               type: number
+ *               description: Enter your age.
+ *             profilePicture:
+ *               type: string
+ *               description: Base64-encoded string of the profile picture.
  *   responses:
  *     '200':
- *       description: User details changed successfully.
+ *       description: User details updated successfully.
  *     '403':
  *       description: Email already in use by another user.
  *     '404':
@@ -134,36 +145,53 @@ router.patch("/editUser/:id", validateRequest(editUserSchema), editUser);
  * @swagger
  * /auth/deleteUser/{id}:
  *  delete:
- *   summary: delete User
+ *   summary: Delete a user
  *   tags: [Auth]
  *   parameters:
- *   - in: path
- *     name: id
- *     type: string
- *     description: The Id to update.
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: string
+ *       description: The ID of the user to delete.
  *   responses:
  *     '200':
- *       description: User Deleted
+ *       description: User deleted successfully.
+ *     '404':
+ *       description: User not found.
  */
 router.delete("/deleteUser/:id", authentication, deleteUser);
 
 /**
  * @swagger
  * /auth/resetPassword/{id}:
- *  post:
- *   summary: reset password
+ *  patch:
+ *   summary: Reset a user's password
  *   tags: [Auth]
  *   parameters:
- *   - in: formData
- *     name: newPassword
- *     type: string
- *     description: Enter new Password.
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: string
+ *       description: The ID of the user.
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             newPassword:
+ *               type: string
+ *               description: Enter the new password.
  *   responses:
  *     '200':
- *       description: User Details changed successfully
+ *       description: Password reset successfully.
+ *     '404':
+ *       description: User not found.
  */
 router.patch("/resetPassword/:id", authentication, validateRequest(resetPasswordSchema), resetPassord);
-
 
 /**
  * @swagger
@@ -173,9 +201,9 @@ router.patch("/resetPassword/:id", authentication, validateRequest(resetPassword
  *   tags: [Auth]
  *   responses:
  *     '200':
- *       description: Successfully retrieved users
+ *       description: Successfully retrieved users.
  *     '404':
- *       description: No users found
+ *       description: No users found.
  */
 router.get("/users", authentication, isAdmin, getAllUsers);
 
