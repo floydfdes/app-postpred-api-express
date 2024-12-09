@@ -137,8 +137,10 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "https://interesthub-api.herokuapp.com", // Updated Base API URL
-        description: "Production server",
+        url: process.env.NODE_ENV === "production"
+          ? "https://app-postpred-api-express.onrender.com/posts"
+          : "http://localhost:1337", // Local server URL
+        description: process.env.NODE_ENV === "production" ? "Production server" : "Development server",
       },
     ],
     components: {
@@ -156,7 +158,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["index.js", "./routes/posts.js", "./routes/comments.js", "./routes/auth.js", "./routes/contact.js"], // Adjust paths to your route files
+  apis: ["index.js", "routes/posts.js", "routes/comments.js", "routes/auth.js", "routes/contact.js"], // Adjust paths to your route files
 };
 
 const swaggerDocs = swaggerDoc(swaggerOptions);
@@ -185,3 +187,5 @@ mongoose
   .catch((err) => console.log(err.message));
 
 mongoose.set("useFindAndModify", false);
+
+export default app
