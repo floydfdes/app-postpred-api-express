@@ -1,5 +1,6 @@
 import express from "express";
 import Hobby from "../models/newHobby.js";
+import User from "../models/User.js";
 
 const router = express.Router();
 
@@ -28,13 +29,19 @@ export const getPost = async (req, res) => {
 export const createPost = async (req, res) => {
   const body = req.body;
 
-  const newPost = new Hobby({
-    ...body,
-    creator: req.userId,
-    postImage: body.postImage || "",
-  });
-
   try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const newPost = new Hobby({
+      ...body,
+      creator: req.userId,
+      creatorName: user.firstName,
+      postImage: body.postImage || "",
+    });
+
     await newPost.save();
     res.status(201).json(newPost);
   } catch (error) {
