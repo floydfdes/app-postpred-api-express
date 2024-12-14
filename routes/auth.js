@@ -2,6 +2,7 @@ import {
   deleteUser,
   editUser,
   getAllUsers,
+  getUser,
   login,
   register,
   resetPassord,
@@ -206,5 +207,52 @@ router.patch("/resetPassword/:id", authentication, validateRequest(resetPassword
  *       description: No users found.
  */
 router.get("/users", authentication, isAdmin, getAllUsers);
+
+/**
+ * @swagger
+ * /auth/user/{id}:
+ *  get:
+ *   summary: Fetch a user by ID
+ *   tags: [Auth]
+ *   parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: The ID of the user to fetch
+ *   responses:
+ *     '200':
+ *       description: Successfully retrieved the user.
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               _id:
+ *                 type: string
+ *                 description: User ID.
+ *               firstName:
+ *                 type: string
+ *                 description: First name of the user.
+ *               lastName:
+ *                 type: string
+ *                 description: Last name of the user.
+ *               email:
+ *                 type: string
+ *                 description: Email address of the user.
+ *               age:
+ *                 type: number
+ *                 description: Age of the user.
+ *               gender:
+ *                 type: string
+ *                 description: Gender of the user.
+ *     '404':
+ *       description: User not found.
+ *     '500':
+ *       description: Server error.
+ */
+router.get("/user/:id", authentication, getUser);
+
 
 export default router;
