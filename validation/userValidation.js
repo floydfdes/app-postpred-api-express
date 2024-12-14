@@ -48,11 +48,13 @@ export const editUserSchema = Joi.object({
   email: Joi.string().email().optional(),
   profilePicture: Joi.string()
     .optional()
+    .allow('', null)
     .pattern(/^data:image\/[a-zA-Z]+;base64,[a-zA-Z0-9+/=]+$/)
     .messages({
       "string.pattern.base": "Profile picture must be a valid Base64 string",
     }),
 });
+
 
 export const resetPasswordSchema = Joi.object({
   newPassword: Joi.string().min(6).required().messages({
